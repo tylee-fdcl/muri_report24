@@ -5,6 +5,7 @@
 \usepackage{titlesec}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
+\usepackage[font=small]{caption}
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage[T1]{fontenc}
@@ -13,6 +14,7 @@
 \usepackage{tabularx}
 \usepackage{cleveref}
 \usepackage{tikz}
+\usepackage{wrapfig}
 
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{shapes.geometric}
@@ -32,6 +34,15 @@
 \newcommand{\cX}{{\mathcal{X}}}
 
 \newcommand{\dg}[1]{{\textcolor{blue}{#1}}}
+
+
+\newwrite\loggraphics
+\immediate\openout\loggraphics=\jobname.loggraphics%
+\let\oincludegraphics\includegraphics% store original \includegraphics
+\renewcommand{\includegraphics}[2][]{% prepend to it (could also use xpatch, etc.)
+  \immediate\write\loggraphics{#2}
+  \oincludegraphics[#1]{#2}}
+
 
 \begin{document}
 
@@ -139,6 +150,12 @@ The contrast between temporally- and spatially-triggered systems also demonstrat
 These insights provide guidance for the development of general tools for hybrid systems analysis, including stratified manifolds, hybrid tangent and cotangent structures, and variational principles on non-smooth domains.
 Future work will focus on extending these methods to nonlinear systems, identifying geometric obstructions to well-posedness, and designing control and optimization strategies that are robust to the topological and dynamical singularities inherent in hybrid systems.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{./figures/linear-006.png}
+    \caption{Two qualitatively distinct types of Zeno behaviors in planar affine hybrid systems~\cite{clark_linear}}
+\end{figure}
+
 
 \subsection{Hybrid Conley Index Theory (Kalies, Mischaikow)}\label{sec:hybrid_Conley}
 
@@ -163,6 +180,13 @@ This work provides a computational pipeline that links hybrid dynamics to algebr
 We are currently working to extend this approach to broader classes of hybrid systems, especially in connection with the developments in \Cref{sec:learning_Mischaikow,sec:homologicaldynamicsHS,sec:DSGRN}.
 This includes efforts to generalize the mathematical theory to cover more complex hybrid models, clarify the interpretation of algebraic invariants in the absence of standard dynamical conditions, and integrate these tools with the combinatorial-geometric perspectives developed elsewhere.
 A key direction is to understand how to reconstruct or infer meaningful dynamics—such as attractors, invariant manifolds, and recurrence structures—from the topological data produced by the Conley index in hybrid contexts.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./figures/bouncing_ball_Conley.png}
+    \caption{Bouncing ball: from the phase portrait of the hybrid system to a combinatorial model~\cite{KaRi-hybridCIT}}
+\end{figure}
+
 
 %TL: any pre-print for [12]
 
@@ -222,6 +246,11 @@ We also demonstrate that, when using networks constrained to produce cubical dec
 Though such networks limit the geometric complexity that can be represented, test examples confirm that correct Conley indices can still be obtained, as long as the network accurately approximates the labeling function.
 Additionally, we propose heuristics to detect whether a given network architecture is sufficient to capture complex basin geometries.
 
+\begin{wrapfigure}[11]{r}{0.4\textwidth}
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/vibro-impact.png}
+    \caption{Vibro-impact energy harvester}
+\end{wrapfigure}
 Based on these exploratory studies, we have begun the process of extending these ideas to the setting of hybrid systems. 
 In particular, in joint work with Kuske (GaTech) we have been developing computational tools to characterize the global dynamics of a vibro-impact energy harvester (see \cite{serdukova2021post}), 
 which is a mechanical system that converts ambient vibrations into electrical energy by using mechanical impacts between a vibrating structure and physical stops. These impacts introduce nonlinear dynamics that broaden the frequency range and enhance energy output compared to traditional resonant harvesters. While they offer improved performance in variable or broadband vibration environments, they also pose challenges such as mechanical wear and complex modeling.
@@ -295,6 +324,11 @@ In legged locomotion, for example, each individual stance phase may correspond t
 Formally defining holonomy in this non-smooth setting requires a framework that can consistently account for phase-dependent transitions, impacts, and resets. 
 A further difficulty lies in ensuring the holonomy group remains well-defined under hybrid dynamics—particularly when guards (reset surfaces) and resets are defined via constraints on the shape space.
 
+\begin{wrapfigure}[13]{r}{0.4\textwidth}
+    \centering
+    \includegraphics[width=0.35\textwidth]{./figures/hybrid_holonomy.png}
+    \caption{Hybrid bundle with two component $M_1$, $M_2$, and impact surface $S$}
+\end{wrapfigure}
 In recent work \cite{hybrid_holonomy}, we developed a formal framework for defining and computing the holonomy group of hybrid systems, and analyzed their behavior in the limit as the number of impacts increases. 
 We showed that if the guards are defined on the shape space, then the hybrid holonomy group is well-defined. 
 Additionally, we observed that piecewise-flat trajectories—such as those in hybrid locomotion—can be approximated by smooth curved trajectories. 
@@ -380,6 +414,16 @@ This approach will enable us to systematically analyze how network reconfigurati
 %
 %\dg{ALL, I am happy with this version as is, but I must still ask: would you like me to throw strategy spaces into the mix here? Thanks, --Dan. Tony: I would be okay if you added that. }
 
+\begin{figure}
+    \centering
+    \subcaptionbox{Randomly selected set of non-positive divergence graphs}[0.45\textwidth]%
+    {\includegraphics[height=0.2\textwidth]{figures/nds-008.png}}
+    \hspace*{0.3cm}
+    \subcaptionbox{Switched network system response over the network topologies}[0.45\textwidth]%
+    {\includegraphics[height=0.2\textwidth]{figures/nds-010.png}}
+    \caption{Hybrid dynamic network: coupling induced stabilization of network dynamical systems and switching~\cite{mouyebe2025coupling}}
+\end{figure}
+
 \subsection{Stochastic Hybrid System (Lee, Clark)}\label{sec:SHS}
 
 A stochastic hybrid system (SHS) provides a comprehensive framework for modeling systems with uncertainties in both continuous and discrete dynamics.
@@ -407,6 +451,15 @@ Furthermore, this operator-theoretic perspective enables the development of data
 Our current efforts are focused on extending these results to higher-dimensional systems on a manifold.
 
 %As hybrid systems are comprised of multiple interlocking components, stochasticity may be interpreted in many different ways. In \cite{stochastic-hybrid}, two stochastic cases are presented extending the deterministic results of \cite{OpSh_fp} to systems whose continuous dynamics are stochastic and discrete dynamics are either deterministic or stochastic. The Koopman operator encodes the expected value of an observable while the Frobenius-Perron operator is its adjoint and evolves densities. The generator for these operators is comprised as a partial differential equation (PDE) (arising from the continuous dynamics) and boundary conditions (arising from the discrete dynamics). The induced boundary conditions are qualitatively different depending on whether the jumps are stochastic or deterministic. Numerical experiments utilizing Monte Carlo simulation are performed to validate the analytic predictions from the hybrid PDE. We are extending these restults to higher dimensions and to general manifolds.
+
+
+\begin{figure}
+    \centering
+    \subcaptionbox{Deterministic flow with forced jump}[0.32\textwidth]{\includegraphics[height=0.25\textwidth]{figures/density_evolution_ideal_jump.pdf}}
+    \subcaptionbox{Stochastic flow with forced jump}[0.32\textwidth]{\includegraphics[height=0.25   \textwidth]{figures/density_evolution_det_jump_max_sigma.pdf}}
+    \subcaptionbox{Stochastic flow with spontaneous jump}[0.32\textwidth]{\includegraphics[height=0.25\textwidth]{figures/density_evolution_pois_jump_max_sigma.pdf}}
+    \caption{Evolution of the probability density over varying types of stochastic hybrid system on $(-\infty, 2]$}
+\end{figure}
 
 \subsection{Geometric Integration for Stochastic Mechanical Systems (Lee)}\label{sec:geo_int}
 
@@ -538,6 +591,22 @@ Additionally, we are investigating whether the two-phase approach developed in B
 This would enable the treatment of trajectories involving a variable number of discrete events, such as multi-bounce systems or hybrid transitions under uncertainty.
 Our goal is to create a numerically robust framework for hybrid optimal control that leverages the computational advantages of AGHF while integrating the structural insights of hybrid systems theory.
 
+\begin{figure}[b]
+\begin{minipage}{0.6\textwidth}
+    \centering
+    \includegraphics[height=3.1cm]{figures/aghf-000.png}
+    %\includegraphics[height=3.1cm]{figures/aghf-001.png}
+    \includegraphics[height=3.1cm]{figures/aghf-004.png}
+    \caption{Optimal trajectories in a higher-dimensional space constructed by affine geometric heal flow~\cite{adu2025bring,adu2025phasing}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\textwidth}
+    \centering
+    \includegraphics[height=3.1cm]{figures/MFG/sample_traj_HybMFG.pdf}
+    \caption{Hybrid mean field game for crowd evacuation utilizing hybrid structures}
+\end{minipage}
+\end{figure}
+
 \subsection{Hybrid Mean Field Game (Lee)}\label{sec:hybrid_MFG}
 
 Mean field games (MFGs) for hybrid systems extend classical MFG theory to settings where each agent evolves according to hybrid dynamics—that is, systems that combine continuous evolution (e.g., differential equations) with discrete events (e.g., mode switching, impacts, or jumps).
@@ -594,6 +663,16 @@ Looking ahead, we aim to integrate DHAL with the homological analysis methods de
 In particular, DHAL’s data-driven decomposition of trajectories into discrete modes and mode-specific dynamics can be directly leveraged to build mode-aware cellular decompositions of hybrid phase space, enabling computational topology techniques such as Conley index theory.
 This integration would allow estimation of invariant sets, attractors, and their connectivity, thus uncovering global structures in hybrid dynamics.
 Such a unified approach offers both local (mode-level) and global (system-wide) insight, facilitating verification, control synthesis, and refinement of hybrid models from data, with topological feedback guiding learning and adaptation.
+
+\begin{figure}
+    \centering
+    \includegraphics[height=3cm]{figures/dhal-000.png}
+    \hfill
+    \includegraphics[height=3cm]{figures/dhal-003.png}
+    \hfill
+    \includegraphics[height=3cm]{figures/dhal-008.png}
+    \caption{Discrete Hybrid Automata Learning (DHAL) framework illustrated by robotic skateboarding~\cite{liu2025discrete}}
+\end{figure}
 
 \subsection{Generalized DSGRN for Hybrid Control (Guralnik, Mischaikow, Kalies)}\label{sec:DSGRN}
 
